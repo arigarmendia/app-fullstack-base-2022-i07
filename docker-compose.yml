@@ -10,7 +10,7 @@ services:
         command:                 "tsc --project /workspace --outDir /output --watch --pretty true"
 
     mysql-server:
-        image:                   mysql:5.7
+        image:                   arm64v8/mysql:oracle
         hostname:                mysql-server
         environment:
             MYSQL_ROOT_PASSWORD: userpass
@@ -40,8 +40,7 @@ services:
             -                    ./src/frontend:/home/node/app/static
         networks:
             -                    app-fullstack-net
-        depends_on:
-            -                    mysql-server
+
         ports: 
             -                    "8000:3000"
         command:                 nodemon /home/node/app/src/index.js
