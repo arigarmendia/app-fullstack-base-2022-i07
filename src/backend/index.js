@@ -33,28 +33,55 @@ app.use(express.static('/home/node/app/static/'));
 //    res.send(JSON.stringify(devices)).status(200);
 //});
 
+
+// Funcion para validar los datos
+function validateInput(datos) {
+    return ((datos.name != "" && datos.hasOwnProperty("name")) && (datos.hasOwnProperty("type")));    
+}
+
+// Funcion para hacer la consulta de todos los dispositivos a la DB
+function callMeMayBe(rows) {
+    utils.query('SELECT * from Devices', (err, rows) => {  
+        if (err){ 
+            return (false); 
+        } else {
+            return (true);
+        }
+        console.log('The data from Devices table are: \n', rows);
+        //res.send(JSON.stringify(rows)).status(200);
+    });
+    //return (rows);
+    //return res.send(JSON.stringify(rows)).status(200);
+}
+
+
 //=======[ Obtener la lista de dispositivos ]==================================================
 app.get('/devices/', function (req, res) {
 
-    console.log("pidieron ver la DB");
+    //console.log("pidieron ver la DB");
+    //let rows = [];
+    //if (callMeMayBe(rows)) {
+    //    res.send(JSON.stringyfy(rows)).status(200);
+    //} else {
+    //    res.send(error).status(400);
+    //}
+
         utils.query('SELECT * from Devices', (err, rows) => {  
             if (err){ 
                 throw err; 
                 res.send( err).status(400); 
-                return
+               return
             }
             console.log('The data from Devices table are: \n', rows);
             res.send(JSON.stringify(rows)).status(200);
         });
+    //res.send(JSON.stringyfy(callMeMayBe())).status(200);
 });
 
-// Funcion para validar los datos
-function validateInput(datos) {
-    return ((datos.name != "" && datos.hasOwnProperty("name")) && (datos.hasOwnProperty("type")));
-}
+
 
 //=======[ Crear nuevo dispositivo ]==================================================
-// Inserta un dispositivo con los datos enviados en el cuerpo del POST
+// Inserta un dispositivo nuevo con las caracteristicas ingresadas en el POST
 app.post("/nuevoDispositivo", function (req, res) {
     console.log("pidieron insertar en la DB");
         let data = req.body;
@@ -82,6 +109,7 @@ app.post("/nuevoDispositivo", function (req, res) {
                     res.send(JSON.stringify(rows)).status(200);
                 });
                 // res.send(JSON.stringify(response)).status(200);
+                //callMeMayBe();
             });
         } else {
             res.send("Bad Data").status(300);
@@ -89,8 +117,57 @@ app.post("/nuevoDispositivo", function (req, res) {
 });
 
 
+//=======[ Borrar dispositivo ]==================================================
+
+app.post("/borrarDispositivo", function (req, res) {
+    console.log("Request para remover un dispositivo de la DB");
+        let data = req.body;
+        let query = 'DELETE from Devices WHERE id = ' + data.id;
+        console.log(query);
+        utils.query(query, (err, response) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            utils.query('SELECT * from Devices', (err, rows) => {  
+                if (err){ 
+                    throw err; 
+                    res.send( err).status(400); 
+                    return
+                }
+                console.log('The data from Devices table are: \n', rows);
+                res.send(JSON.stringify(rows)).status(200);
+            });
+            //res.send(JSON.stringify(response)).status(200);
+        });
+});
 
 
+//=======[ Cambiar el estado ]==================================================
+app.post("/cambiarEstadoDispositivo", function (req, res) {
+    console.log("pidieron cambiar el estado del dispositivo en la DB a " + req.body.state);
+        let data = req.body;
+        let query = 'UPDATE Devices SET state = ? WHERE id = ?';
+        utils.query(query,[req.body.state, req.body.id], (err, response) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            utils.query('SELECT * from Devices', (err, rows) => {  
+                if (err){ 
+                    throw err; 
+                    res.send( err).status(400); 
+                    return
+                }
+                console.log('The data from Devices table are: \n', rows);
+                res.send(JSON.stringify(rows)).status(200);
+            });
+        });
+});
+
+
+
+// Mensaje OK para la consola
 app.listen(PORT, function(req, res) {
     console.log("NodeJS API running correctly");
 });
