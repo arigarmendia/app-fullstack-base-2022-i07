@@ -10,19 +10,14 @@ class Main implements EventListenerObject, HandleResponse{
         this.framework.ejecutarRequest("GET", "http://localhost:8000/devices",this);
     }
 
-    // Modificacion de dispositivo existente
-    cambiarEstadoDispositivoAlServidor() {
-        let json = { id: 1, state: 0 };
-        this.framework.ejecutarRequest("POST", "http://localhost:8000/deviceChange",this,json);
-        
-    }
     // Alta de nuevo dispositivo
-    altaDispositivo() {
-        let json = { id: 1, state: 0 };
-        this.framework.ejecutarRequest("POST", "http://localhost:8000/deviceChange",this,json);
+    altaDispositivo(nombre, tipo, descripcion) {
+        let json = {name: nombre, description: descripcion, state: 0, type: tipo };
+        console.log("vino a alta dispositivo");
+        this.framework.ejecutarRequest("POST", "http://localhost:8000/nuevoDispositivo",this,json);
         
     }
-
+    
     // Para dibujar la grilla con los elementos 
     cargarGrilla(listaDisp: Array<Device>) {
         console.log("llego info del servidor", listaDisp);    
@@ -62,6 +57,7 @@ class Main implements EventListenerObject, HandleResponse{
                   </label>
                 </div>
           </a>
+          <div class=  row s6> <a class="waves-effect waves-light btn-small" id="bb_${disp.id}" >Eliminar</a> <div>
           </li>`;
         }
         // Armar la grilla
@@ -72,6 +68,11 @@ class Main implements EventListenerObject, HandleResponse{
         for (let disp of listaDisp) {
             let cb = document.getElementById("cb_" + disp.id);
             cb.addEventListener("click", this);
+
+            // borrar dispositivo
+            let btnborrar = document.getElementById('bb_' + disp.id);
+            btnborrar.addEventListener("click", this);
+           
         }
         
         this.framework.ocultarCargando();
@@ -88,8 +89,21 @@ class Main implements EventListenerObject, HandleResponse{
         let tipoEvento:string=object.type;
         let objEvento: HTMLElement;
         objEvento = <HTMLElement>object.target;
+
+        // Si se pide alta de nuevo dispositivo
+        if (objEvento.id == 'alta') {
+            let nombre = (<HTMLInputElement>document.getElementById("nombre")).value;
+            let tipo = (<HTMLInputElement>document.getElementById("tipo")).value;
+            let descripcion = (<HTMLInputElement>document.getElementById("descripcion")).value;
+            console.log(nombre);
+            this.altaDispositivo(nombre, tipo, descripcion);
+            this.cosultarDispositivoAlServidor();
+            
+
+
+        
         // Si se apretó boton otro
-        if(objEvento.id=="btnOtro"){
+        } else if(objEvento.id=="btnOtro"){
             console.log(objEvento.id, objEvento.textContent); 
             
             let iNombre =<HTMLInputElement> document.getElementById("iNombre");
@@ -121,11 +135,16 @@ window.addEventListener("load", () => {
     var instances = M.Modal.init(elemsM, "");
 
     // Dropdown dentro del modal NUEVO
-    var elemsI = document.querySelectorAll('.dropdown-trigger');
-    var instances = M.Dropdown.init(elemsI, "");
+    var elemsD = document.querySelectorAll('select');
+    var instancesD = M.FormSelect.init(elemsD, "");
 
+    
     let main: Main = new Main();
     main.cosultarDispositivoAlServidor();
+    
+    let aceptar = document.getElementById("alta")
+    aceptar.addEventListener("click", main);
+
 
 });
 

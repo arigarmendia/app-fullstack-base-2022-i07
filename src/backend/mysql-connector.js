@@ -10,7 +10,7 @@ var connection = mysql.createConnection({
     database : 'smart_home'
 });
 
-//=======[ Main module code ]==================================================
+//=======[ Main module code ]===============================================
 
 connection.connect(function(err) {
     if (err) {
