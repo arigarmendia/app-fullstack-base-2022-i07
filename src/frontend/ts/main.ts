@@ -34,7 +34,6 @@ class Main implements EventListenerObject, HandleResponse{
             
     }
 
-
     // Para dibujar la grilla con los elementos 
     cargarGrilla(listaDisp: Array<Device>) {
         console.log("llego info del servidor", listaDisp);    
@@ -123,20 +122,22 @@ class Main implements EventListenerObject, HandleResponse{
             let descripcion = (<HTMLInputElement>document.getElementById("descripcion")).value;
             console.log(nombre);
             this.altaDispositivo(nombre, tipo, descripcion);
-            
-            // Cerrar el modal
-            let form = <HTMLDivElement>document.getElementById("modalNuevo")
-            var instance = M.Modal.getInstance(form);
-            instance.close();
             this.cosultarDispositivoAlServidor();
             
         
         // Si se pide borrar un dispositivo
         } else if (objEvento.id.startsWith("bb_")) {
             let idDis = objEvento.id.substring(3);
-            this.borrarDispositivo(idDis);
-            alert("Se borró exitosamente el dispositivo"+idDis);
-            this.cosultarDispositivoAlServidor();
+            var c = confirm("Esta seguro de que desea borrar el dispositivo?");  
+            
+            if (c == true) {  
+             this.borrarDispositivo(idDis);
+             alert("Se borró exitosamente el dispositivo"+idDis);
+             this.cosultarDispositivoAlServidor();  
+            } 
+            //this.borrarDispositivo(idDis);
+            //alert("Se borró exitosamente el dispositivo"+idDis);
+            //this.cosultarDispositivoAlServidor();
 
 
         // Si se pide modificar un dispositivo
