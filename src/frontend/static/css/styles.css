@@ -8,3 +8,14 @@ body {
 main {
     flex: 1 0 auto;
 }
+img.imgloanding{
+    width: 100px;
+    height: 60px;
+    position: fixed;
+    top:  30%;
+    left: 50%;
+}
+span.negrita{
+    color: black;
+    font-weight: bold;
+}
