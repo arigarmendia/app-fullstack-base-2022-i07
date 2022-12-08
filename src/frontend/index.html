@@ -109,6 +109,41 @@
             </div>
         </div>
 
+        <!-- Modal para el boton de modificar -->
+        <div id="modalEdit" class="modal">
+            <div class="modal-content">
+            <h4>Modificar dispositivo </h4>
+            <div class="row">
+                <form class="col s12">
+                    <div class="row">
+                    <div class="input-field col s6">
+                        <input placeholder="Ejemplo: Lámpara 1" id="mod_nombre" type="text" class="validate">
+                        <label for="nombre">Nuevo nombre dispositivo</label>
+                    </div>
+                    <div class="input-field col s6">
+                        <input id="mod_descripcion" type="text" class="validate">
+                        <label for="descripcion">Nueva descripción</label>
+                    </div>
+                    </div>
+            <p>Seleccione el tipo de dispositivo</p>
+            
+            <!-- Dropdown Structure -->
+            <div class="input-field col s12">
+                <select class="icons" id="mod_tipo">
+                    <option value="0">Lámpara</option>
+                    <option value="2">Velador</option>
+                    <option value="3">Ventilador</option>
+                    <option value="1">Persiana</option>
+                </select>
+                <label>Cambiar el tipo</label>
+            </div>
+            </div>
+            <div class="modal-footer">
+            <!--<a href="#!" class="modal-close waves-effect waves-green btn-flat">Aceptar</a>-->
+            <button class="btn modal-close waves-effect waves-light button-view" id="edit" name="aceptarEdit">Aceptar</button>
+            </div>
+            </div>
+        </div>
     
 
 

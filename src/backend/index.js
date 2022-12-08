@@ -55,6 +55,24 @@ function callMeMayBe(rows) {
 }
 
 
+//=======[ Obtener solo un dispositivo :ID ]==================================================
+
+app.get('/buscarDispositivo', function (req, res) {
+    let deviceID = req.query.deviceID;
+    console.log("Pidieron ver un solo dispositivo con el ID: " + deviceID);
+    let query = 'SELECT * FROM Devices WHERE id =?';
+    utils.query(query, [deviceID], (err, data) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        // rows fetch
+        console.log(data);
+        res.send(JSON.stringify(data)).status(200);
+    });
+});
+
+
 //=======[ Obtener la lista de dispositivos ]==================================================
 app.get('/devices/', function (req, res) {
 
@@ -163,6 +181,42 @@ app.post("/cambiarEstadoDispositivo", function (req, res) {
                 res.send(JSON.stringify(rows)).status(200);
             });
         });
+});
+
+
+//=======[ Editar el dispositivo]==================================================
+app.post("/modificarDispositivo", function (req, res) {
+    console.log("pidieron modificar un dispositivo en la DB");
+        let data = req.body;
+        console.log(req.body);
+        if (validateInput(data)) {
+            let querydescription = ((req.body.hasOwnProperty("description") && (req.body.description != "")) ? req.body.description : "");
+            let querystate = ((req.body.hasOwnProperty("state") && (req.body.state === 0 || req.body.state === 1)) ? req.body.state  : 0);
+            //let querydimmable = ((req.body.hasOwnProperty("dimmable") && (req.body.dimmable === 0 || req.body.dimmable === 1)) ?  req.body.dimmable : 0);
+            //Query build
+            query = 'UPDATE Devices SET name = ?, description = ?, state = ?, type = ? WHERE id = ?';
+            console.log(query);
+            utils.query(query,[req.body.name, req.body.description, req.body.state, req.body.type, req.body.id], (err, response) => {
+                if (err) {
+                    console.error(err);
+                    res.send("Error creating device").status(300);
+                    return;
+                }
+                utils.query('SELECT * from Devices', (err, rows) => {  
+                    if (err){ 
+                        throw err; 
+                        res.send( err).status(400); 
+                        return
+                    }
+                    console.log('The data from Devices table are: \n', rows);
+                    res.send(JSON.stringify(rows)).status(200);
+                });
+                // res.send(JSON.stringify(response)).status(200);
+                //callMeMayBe();
+            });
+        } else {
+            res.send("Bad Data").status(300);
+        }
 });
 
 
