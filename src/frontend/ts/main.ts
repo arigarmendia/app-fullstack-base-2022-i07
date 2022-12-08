@@ -45,7 +45,7 @@ class Main implements EventListenerObject, HandleResponse{
     // Modificar un dispositivo
     modificarDispositivo(id, nombre, descripcion, tipo, estado) {
         let json = {id: id, name: nombre, description: descripcion, type: tipo, state: estado};
-        console.log("vino modificacion del dispositivo ");
+        console.log("vino modificacion del dispositivo " + json);
         this.framework.ejecutarRequest("POST", "http://localhost:8000/modificarDispositivo",this, json);            
     }
 
@@ -54,6 +54,8 @@ class Main implements EventListenerObject, HandleResponse{
         console.log("Estoy en cargar el modal, disp.name = " + disp[0].name + "descripcion = " + disp[0].description);
         (<HTMLInputElement>document.getElementById("mod_nombre")).value = disp[0].name;
         (<HTMLInputElement>document.getElementById("mod_descripcion")).value = disp[0].description;
+        (<HTMLSelectElement>document.getElementById("mod_tipo")).selectedIndex=disp[0].type;
+        this.temp_state = (disp[0].state ? "1": "0");
 
 }
 
@@ -69,11 +71,12 @@ class Main implements EventListenerObject, HandleResponse{
             grilla += ` <li class="collection-item avatar">`;
             
             // Elijo ícono dependiendo qué tipo de dispositivo es
-            if (disp.type == 1) {
-                grilla+=`<img src="static/images/light.png" alt="" class="circle"> `   
-            } else {
-                grilla+=`<img src="static/images/fan.png" alt="" class="circle"> `  
-            }
+            grilla+=`<img src="static/images/${disp.type}.png" alt="" class="circle"> ` 
+            // if (disp.type == 1) {
+            //     grilla+=`<img src="static/images/light.png" alt="" class="circle"> `   
+            // } else {
+            //     grilla+=`<img src="static/images/fan.png" alt="" class="circle"> `  
+            // }
             
             // Nombre y descripción del dispositivo
             grilla += ` <span class="title negrita">${disp.name}</span>
@@ -175,7 +178,8 @@ class Main implements EventListenerObject, HandleResponse{
         } else if (objEvento.id.startsWith("be_")) {
             
             let idDisp = objEvento.id.substring(3);
-            let disp = this.cosultarUnSoloDispositivoAlServidor(idDisp);
+            this.temp_id = idDisp ;
+            this.cosultarUnSoloDispositivoAlServidor(idDisp);
 
 
 
@@ -188,12 +192,12 @@ class Main implements EventListenerObject, HandleResponse{
             let idDisp = this.temp_id;
             let nombre = (<HTMLInputElement>document.getElementById("mod_nombre")).value;
             let descripcion = (<HTMLInputElement>document.getElementById("mod_descripcion")).value;
-            let tipo = (<HTMLInputElement>document.getElementById("mod_tipo")).value;
-            let estado = this.temp_state;
+            let tipo = (<HTMLSelectElement>document.getElementById("mod_tipo")).selectedIndex;
+            let estado = this.temp_state ;
             // let nombre = this.temp_nombre;
             // let tipo = this.temp_tipo;
             // let descripcion = this.temp_desc;
-            // console.log("Nombre = " + nombre + " ID: " + idDisp);
+            console.log("Pedi editar con esto: Nombre = " + nombre + " ID: " + idDisp);
             this.modificarDispositivo(idDisp, nombre, descripcion, tipo, estado);
             this.cosultarDispositivoAlServidor();
             //alert("hola estoy en el boton edit");
