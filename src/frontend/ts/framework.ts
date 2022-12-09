@@ -36,6 +36,7 @@ class Framework{
             let disp:Array<Device> = JSON.parse(xmlHttp.responseText);
             console.log("vinieron a buscar un solo dispositivo, y la respuesta fue:" + xmlHttp.responseText);
             responseHandler.cargarModalUpdate(disp);
+          
           }
           else 
               if (xmlHttp.status == 200) {

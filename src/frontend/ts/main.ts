@@ -55,7 +55,10 @@ class Main implements EventListenerObject, HandleResponse{
         console.log("Estoy en cargar el modal, disp.name = " + disp[0].name + "descripcion = " + disp[0].description);
         (<HTMLInputElement>document.getElementById("mod_nombre")).value = disp[0].name;
         (<HTMLInputElement>document.getElementById("mod_descripcion")).value = disp[0].description;
-        (<HTMLSelectElement>document.getElementById("mod_tipo")).selectedIndex=disp[0].type;
+        //(<HTMLSelectElement>document.getElementById("mod_tipo")).selectedIndex=disp[0].type;
+        (<HTMLInputElement>document.getElementById("mod_tipo")).value = String(disp[0].type);
+        
+        
         this.temp_state = (disp[0].state ? "1": "0");
 
 }
@@ -157,7 +160,7 @@ class Main implements EventListenerObject, HandleResponse{
             let tipo = (<HTMLInputElement>document.getElementById("tipo")).value;
             let descripcion = (<HTMLInputElement>document.getElementById("descripcion")).value;
             //console.log(nombre);
-            if (nombre == "") {
+            if (nombre == "" || tipo == "") {
                 (alert("No se pudo agregar el dispositivo. Por favor inténtelo nuevamente."));
                 
             } else {
@@ -187,7 +190,7 @@ class Main implements EventListenerObject, HandleResponse{
             let idDisp = objEvento.id.substring(3);
             this.temp_id = idDisp ;
             this.cosultarUnSoloDispositivoAlServidor(idDisp);
-
+            
 
 
         }
@@ -199,13 +202,14 @@ class Main implements EventListenerObject, HandleResponse{
             let idDisp = this.temp_id;
             let nombre = (<HTMLInputElement>document.getElementById("mod_nombre")).value;
             let descripcion = (<HTMLInputElement>document.getElementById("mod_descripcion")).value;
-            let tipo = (<HTMLSelectElement>document.getElementById("mod_tipo")).selectedIndex;
+            //let tipo = (<HTMLSelectElement>document.getElementById("mod_tipo")).selectedIndex;
+            let tipo = (<HTMLInputElement>document.getElementById("mod_tipo")).value;
             let estado = this.temp_state ;
       
             console.log("Pedi editar con esto: Nombre = " + nombre + " ID: " + idDisp);
             
-            if (nombre == "") {
-                alert("No se pudo agregar el dispositivo. Inténtelo nuevamente.");
+            if (nombre == "" || tipo == "") {
+                alert("No se pudo modificar el dispositivo. Inténtelo nuevamente.");
             }
             else {
                 this.modificarDispositivo(idDisp, nombre, descripcion, tipo, estado);
