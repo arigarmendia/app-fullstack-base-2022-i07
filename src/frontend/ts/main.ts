@@ -40,14 +40,14 @@ class Main implements EventListenerObject, HandleResponse{
     cambiarEstado(id, state) {
         let json = {id: id, state: state};
         console.log("vino cambio de estado del dispositivo a"+state);
-        this.framework.ejecutarRequest("POST", "http://localhost:8000/cambiarEstadoDispositivo",this,json);
+        this.framework.ejecutarRequest("PUT", "http://localhost:8000/cambiarEstadoDispositivo",this,json);
     }
 
     // Modificar un dispositivo
     modificarDispositivo(id, nombre, descripcion, tipo, estado) {
         let json = {id: id, name: nombre, description: descripcion, type: tipo, state: estado};
         console.log("vino modificacion del dispositivo " + json);
-        this.framework.ejecutarRequest("POST", "http://localhost:8000/modificarDispositivo",this, json);            
+        this.framework.ejecutarRequest("PUT", "http://localhost:8000/modificarDispositivo",this, json);            
     }
 
 // llenado del form del modal de update device
@@ -57,8 +57,6 @@ class Main implements EventListenerObject, HandleResponse{
         (<HTMLInputElement>document.getElementById("mod_descripcion")).value = disp[0].description;
         //(<HTMLSelectElement>document.getElementById("mod_tipo")).selectedIndex=disp[0].type;
         (<HTMLInputElement>document.getElementById("mod_tipo")).value = String(disp[0].type);
-        
-        
         this.temp_state = (disp[0].state ? "1": "0");
 
 }
@@ -166,7 +164,7 @@ class Main implements EventListenerObject, HandleResponse{
             } else {
                 this.altaDispositivo(nombre, tipo, descripcion);
                 alert("El dispositivo se creó exitosamente")
-                this.cosultarDispositivoAlServidor();
+                
             }
         
         // Si se pide borrar un dispositivo
@@ -175,14 +173,11 @@ class Main implements EventListenerObject, HandleResponse{
             var c = confirm("Esta seguro de que desea borrar el dispositivo?");  
             
             if (c == true) {  
-             this.borrarDispositivo(idDis);
-             alert("El dispositivo se eliminó exitosamente"+idDis);
-             this.cosultarDispositivoAlServidor();  
+                this.borrarDispositivo(idDis);
+                alert("El dispositivo se eliminó exitosamente");
+                this.cosultarDispositivoAlServidor();
             } 
-            //this.borrarDispositivo(idDis);
-            //alert("Se borró exitosamente el dispositivo"+idDis);
-            //this.cosultarDispositivoAlServidor();
-
+            
 
         // Si se pide modificar un dispositivo
         } else if (objEvento.id.startsWith("be_")) {
@@ -191,12 +186,8 @@ class Main implements EventListenerObject, HandleResponse{
             this.temp_id = idDisp ;
             this.cosultarUnSoloDispositivoAlServidor(idDisp);
             
-
-
         }
-            // Boton confirmacion de edicion de dispositivo
-            // let btnconfedit = document.getElementById('edit');
-            // btnconfedit.addEventListener("click", this);
+        // Se apretó boton confirmacion de edicion de dispositivo
         else if (objEvento.id=="edit") {
             
             let idDisp = this.temp_id;
@@ -214,7 +205,7 @@ class Main implements EventListenerObject, HandleResponse{
             else {
                 this.modificarDispositivo(idDisp, nombre, descripcion, tipo, estado);
                 alert("El dispositivo se actualizó exitosamente");
-                this.cosultarDispositivoAlServidor();
+                //this.cosultarDispositivoAlServidor();
             }
     
 
@@ -231,9 +222,7 @@ class Main implements EventListenerObject, HandleResponse{
             // Llamo a la funcion para cambiar el estado
             this.cambiarEstado(idDisp, nuevoEstado);
             alert("Se cambió el estado del dispositivo");
-            this.cosultarDispositivoAlServidor();
-            
-        
+            //this.cosultarDispositivoAlServidor();
             
         }
 
