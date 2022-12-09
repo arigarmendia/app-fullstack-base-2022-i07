@@ -6,6 +6,7 @@ var express = require('express');
 var app     = express();
 var utils   = require('./mysql-connector');
 
+
 // to parse application/json
 app.use(express.json()); 
 // to serve static files
@@ -74,12 +75,12 @@ app.post("/nuevoDispositivo", function (req, res) {
         console.log(req.body);
         if (validateInput(data)) {
             
-            query = 'INSERT INTO Devices (name, description, type, state) VALUES ( ?, ?, ?, ?)';
+            query = 'INSERT INTO Devices (name, description, type, state, dimmer) VALUES ( ?, ?, ?, ?, ?)';
             console.log(query);
-            utils.query(query,[req.body.name, req.body.description, req.body.type, req.body.state], (err, response) => {
+            utils.query(query,[req.body.name, req.body.description, req.body.type, req.body.state, req.body.dimmer], (err, response) => {
                 if (err) {
                     console.error(err);
-                    res.send("Error creating device").status(300);
+                    res.send("Error creating device").status(400);
                     return;
                 }
                 res.status(200)
@@ -106,7 +107,7 @@ app.delete("/borrarDispositivo", function (req, res) {
                 console.error(err);
                 return;
             }
-            res.send('OK').status(200);
+            res.status(200);
         });
 });
 
@@ -125,7 +126,7 @@ app.put("/cambiarEstadoDispositivo", function (req, res) {
                 res.send(err).status(400);
                 return;
             }
-            res.send('OK').status(200);
+            res.status(200);
         });
 });
 
@@ -140,14 +141,18 @@ app.put("/modificarDispositivo", function (req, res) {
         let data = req.body;
         
         if (validateInput(data)) {
-            query = 'UPDATE Devices SET name = ?, description = ?, state = ?, type = ? WHERE id = ?';
+            console.log(data)
+            query = 'UPDATE Devices SET name = ?, description = ?, state = ?, dimmer = ?, type = ? WHERE id = ?';
             console.log(query);
-            utils.query(query,[req.body.name, req.body.description, req.body.state, req.body.type, req.body.id], (err, response) => {
+            
+            utils.query(query,[data.name, data.description, data.state, data.dimmer, data.type, data.id], (err, response) => {
                 if (err) {
                     res.send(err).status(400);
+                    console.log("Ejecuto ERROR");
                     return;
                 }
-                res.send("OK").status(200);
+                console.log("Ejecuto OK");
+                res.status(200);
             });
         } else {
             res.send("Bad Data").status(300);

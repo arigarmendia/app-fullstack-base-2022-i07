@@ -6,10 +6,7 @@ class Main implements EventListenerObject, HandleResponse{
     // Variables para guardar el nombre y el estado del dispositivo y poder editarlo
     private temp_id:string = "0";
     private temp_state:string = "0";
-    //private temp_nombre:string = "0";
-    //private temp_desc:string = "0";
-    //private temp_tipo:string = "0";
-    
+    private temp_dimmer:string = "0"; 
 
     private framework: Framework = new Framework();
    
@@ -23,8 +20,8 @@ class Main implements EventListenerObject, HandleResponse{
     }
 
     // Alta de nuevo dispositivo
-    altaDispositivo(nombre, tipo, descripcion) {
-        let json = {name: nombre, description: descripcion, state: 0, type: tipo };
+    altaDispositivo(nombre, tipo, descripcion, dimmer) {
+        let json = {name: nombre, description: descripcion, state: 0, dimmer: dimmer, type: tipo };
         console.log("vino a alta dispositivo");
         this.framework.ejecutarRequest("POST", "http://localhost:8000/nuevoDispositivo",this,json);
     }
@@ -44,8 +41,8 @@ class Main implements EventListenerObject, HandleResponse{
     }
 
     // Modificar un dispositivo
-    modificarDispositivo(id, nombre, descripcion, tipo, estado) {
-        let json = {id: id, name: nombre, description: descripcion, type: tipo, state: estado};
+    modificarDispositivo(id, nombre, descripcion, tipo, estado, dimmer) {
+        let json = {id: id, name: nombre, description: descripcion, type: tipo, state: estado, dimmer:dimmer};
         console.log("vino modificacion del dispositivo " + json);
         this.framework.ejecutarRequest("PUT", "http://localhost:8000/modificarDispositivo",this, json);            
     }
@@ -55,12 +52,18 @@ class Main implements EventListenerObject, HandleResponse{
         console.log("Estoy en cargar el modal, disp.name = " + disp[0].name + "descripcion = " + disp[0].description);
         (<HTMLInputElement>document.getElementById("mod_nombre")).value = disp[0].name;
         (<HTMLInputElement>document.getElementById("mod_descripcion")).value = disp[0].description;
-        //(<HTMLSelectElement>document.getElementById("mod_tipo")).selectedIndex=disp[0].type;
         (<HTMLInputElement>document.getElementById("mod_tipo")).value = String(disp[0].type);
         this.temp_state = (disp[0].state ? "1": "0");
-
+        this.temp_dimmer = (disp[0].dimmer ? "1": "0");
+        if (this.temp_dimmer == "1" ) {
+            (<HTMLInputElement>document.getElementById("dim_editar")).checked=true;
+        }
+        else
+        {
+            (<HTMLInputElement>document.getElementById("dim_editar")).checked=false;
+        }
+        
 }
-
 
     // Para dibujar la grilla con los elementos 
     cargarGrilla(listaDisp: Array<Device>) {
@@ -69,41 +72,44 @@ class Main implements EventListenerObject, HandleResponse{
         let grilla:string = "<ul class='collection'>";
         for (let disp of listaDisp) {
         
-
             grilla += ` <li class="collection-item avatar">`;
             
             // Elijo ícono dependiendo qué tipo de dispositivo es
             grilla+=`<img src="static/images/${disp.type}.png" alt="" class="circle"> ` 
-            // if (disp.type == 1) {
-            //     grilla+=`<img src="static/images/light.png" alt="" class="circle"> `   
-            // } else {
-            //     grilla+=`<img src="static/images/fan.png" alt="" class="circle"> `  
-            // }
             
             // Nombre y descripción del dispositivo
             grilla += ` <span class="title negrita">${disp.name}</span>
             <p>${disp.description}
             </p>
-            <a href="#!" class="secondary-content">
-              <div class="switch">
-                  <label>
-                    Off`;
+            <a href="#!" class="secondary-content">`;
 
-            // Para graficar botón prendido o apagado dependiendo del valor guardado
-            if (disp.state) {
-                grilla += `<input id="cb_${disp.id}" type="checkbox" checked>`;    
-            } else {
-                grilla += `<input id="cb_${disp.id}" type="checkbox">`;    
+
+             if (disp.dimmer) { 
+                // dibujo dimmer
+                grilla += `
+                           
+                            <p class="range-field">
+                            <input type="range" id="cbd_${disp.id}" min="0" value="${disp.state}" max="10" />
+                            </p>
+                            `;
+            }else {   
+                // Para graficar botón prendido o apagado dependiendo del valor guardado
+                grilla += `<div class="switch">
+                            <label> Off`;
+                
+                if (disp.state != 0) {
+                    grilla += `<input id="cb_${disp.id}" type="checkbox" checked>`;    
+                } else {
+                    grilla += `<input id="cb_${disp.id}" type="checkbox">`;    
+                }
+                grilla +=`<span class="lever"></span>
+                        On
+                    </label>
+                    </div>
+                </a>`;
             }
-            
-            
-            grilla +=`<span class="lever"></span>
-                    On
-                  </label>
-                </div>
-            </a>
-            
-                <div class="row">
+            grilla +=
+                `<div class="row">
                     
                     <div class="col s2 offset-s6"> 
                         <a class="waves-effect waves-light btn modal-trigger" id="be_${disp.id}" href="#modalEdit" >Editar</a>
@@ -122,8 +128,18 @@ class Main implements EventListenerObject, HandleResponse{
 
         for (let disp of listaDisp) {
             // Check box
-            let cb = document.getElementById("cb_" + disp.id);
+
+            if (disp.dimmer) {
+            
+                // Check box dimmer
+                let cb_dimmer = document.getElementById("cbd_" + disp.id);
+                cb_dimmer.addEventListener("click", this);
+            }
+            
+            else {let cb = document.getElementById("cb_" + disp.id);
             cb.addEventListener("click", this);
+            }
+            
 
             // Borrar dispositivo
             let btnborrar = document.getElementById('bb_' + disp.id);
@@ -133,8 +149,8 @@ class Main implements EventListenerObject, HandleResponse{
             let btneditar = document.getElementById('be_' + disp.id);
             btneditar.addEventListener("click", this);
 
-            let btnconfedit = document.getElementById('edit');
-            btneditar.addEventListener("click", this);
+            //let btnconfedit = document.getElementById('edit'); //  HABIA TYPO ACA
+            //btnconfedit.addEventListener("click", this);
         }
         
         this.framework.ocultarCargando();
@@ -142,13 +158,8 @@ class Main implements EventListenerObject, HandleResponse{
     }
     // Aquí se manejan las distintas actividades que puedan ocurrir
     handleEvent(object: Event): void {
-     
-        // Cuando termine de cargar la página web, recuperar los elementos tipo "select"
-        // Inicializarlos vacíos
-        //var elems = document.querySelectorAll('select');
-        //var instances = M.FormSelect.init(elems, "");
        
-        let tipoEvento:string=object.type;
+        //let tipoEvento:string=object.type;
         let objEvento: HTMLElement;
         objEvento = <HTMLElement>object.target;
 
@@ -157,13 +168,15 @@ class Main implements EventListenerObject, HandleResponse{
             let nombre = (<HTMLInputElement>document.getElementById("nombre")).value;
             let tipo = (<HTMLInputElement>document.getElementById("tipo")).value;
             let descripcion = (<HTMLInputElement>document.getElementById("descripcion")).value;
+            let dimmer = (<HTMLInputElement>document.getElementById("dim_nuevo")).checked;
             //console.log(nombre);
             if (nombre == "" || tipo == "") {
                 (alert("No se pudo agregar el dispositivo. Por favor inténtelo nuevamente."));
                 
             } else {
-                this.altaDispositivo(nombre, tipo, descripcion);
-                alert("El dispositivo se creó exitosamente")
+                this.altaDispositivo(nombre, tipo, descripcion, dimmer);
+                alert("El dispositivo se creó exitosamente");
+                this.cosultarDispositivoAlServidor();
                 
             }
         
@@ -195,21 +208,34 @@ class Main implements EventListenerObject, HandleResponse{
             let descripcion = (<HTMLInputElement>document.getElementById("mod_descripcion")).value;
             //let tipo = (<HTMLSelectElement>document.getElementById("mod_tipo")).selectedIndex;
             let tipo = (<HTMLInputElement>document.getElementById("mod_tipo")).value;
-            let estado = this.temp_state ;
+            let dimmer = (<HTMLInputElement>document.getElementById("dim_editar")).checked;
+            let dimmer_num = "0";
+            let estado = this.temp_state;
+
+            if (dimmer) {
+                 dimmer_num = "1";
+            } else {
+                dimmer_num = "0"}
+        
+            if (this.temp_dimmer != dimmer_num) {
+                estado = "0";
+            }
       
-            console.log("Pedi editar con esto: Nombre = " + nombre + " ID: " + idDisp);
+            console.log("Pedi editar con esto: Nombre = " + nombre + " ID: " + idDisp+" dimmer check: " +dimmer + " estado:" + estado);
             
             if (nombre == "" || tipo == "") {
                 alert("No se pudo modificar el dispositivo. Inténtelo nuevamente.");
             }
             else {
-                this.modificarDispositivo(idDisp, nombre, descripcion, tipo, estado);
+                this.modificarDispositivo(idDisp, nombre, descripcion, tipo, estado, dimmer);
+                console.log("Pedi editar con esto: Nombre = " + nombre + " ID: " + idDisp+" dimmer check: " +dimmer + " estado:" + estado);
                 alert("El dispositivo se actualizó exitosamente");
-                //this.cosultarDispositivoAlServidor();
+                this.cosultarDispositivoAlServidor();
+                
             }
     
 
-        // Cambiar el estado de un dispositivo
+        // Cambiar el estado de un dispositivo check box
         } else if (objEvento.id.startsWith("cb_")) {
             let idDisp = objEvento.id.substring(3);
             let nuevoEstado: number = 0;
@@ -222,11 +248,20 @@ class Main implements EventListenerObject, HandleResponse{
             // Llamo a la funcion para cambiar el estado
             this.cambiarEstado(idDisp, nuevoEstado);
             alert("Se cambió el estado del dispositivo");
-            //this.cosultarDispositivoAlServidor();
             
+        
+        // Cambiar el estado de un dispositivo dimmer    
+        } else if (objEvento.id.startsWith("cbd_")) {
+            let idDisp = objEvento.id.substring(4);
+            let nuevoEstado1 = (<HTMLInputElement>objEvento).value;
+            this.cambiarEstado(idDisp, nuevoEstado1);
+            alert("Se cambió el estado del dispositivo");
+            
+        
         }
-
+       
     }
+    
 }
 
 // Instancio la clase Main
