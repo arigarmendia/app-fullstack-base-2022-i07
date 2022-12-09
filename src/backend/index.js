@@ -137,7 +137,7 @@ app.post("/nuevoDispositivo", function (req, res) {
 
 //=======[ Borrar dispositivo ]==================================================
 
-app.post("/borrarDispositivo", function (req, res) {
+app.delete("/borrarDispositivo", function (req, res) {
     console.log("Request para remover un dispositivo de la DB");
         let data = req.body;
         let query = 'DELETE from Devices WHERE id = ' + data.id;

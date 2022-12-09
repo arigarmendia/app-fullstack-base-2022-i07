@@ -3,11 +3,12 @@ declare const M;
 // Defino la clase Main
 class Main implements EventListenerObject, HandleResponse{
     
+    // Variables para guardar el nombre y el estado del dispositivo y poder editarlo
     private temp_id:string = "0";
     private temp_state:string = "0";
-    private temp_nombre:string = "0";
-    private temp_desc:string = "0";
-    private temp_tipo:string = "0";
+    //private temp_nombre:string = "0";
+    //private temp_desc:string = "0";
+    //private temp_tipo:string = "0";
     
 
     private framework: Framework = new Framework();
@@ -32,7 +33,7 @@ class Main implements EventListenerObject, HandleResponse{
     borrarDispositivo(id) {
         let json = {id: id};
         console.log("vino baja de dispositivo");
-        this.framework.ejecutarRequest("POST", "http://localhost:8000/borrarDispositivo",this,json);        
+        this.framework.ejecutarRequest("DELETE", "http://localhost:8000/borrarDispositivo",this,json);        
     }
     
     // Cambiar estado de un dispositivo a partir de su id
@@ -100,16 +101,17 @@ class Main implements EventListenerObject, HandleResponse{
                   </label>
                 </div>
             </a>
-            <div class="container">
+            
                 <div class="row">
-                    <div class="col s3"> 
-                        <a class="waves-effect waves-light btn modal-trigger" id="be_${disp.id}" href="#modalEdit">Editar</a>
+                    
+                    <div class="col s2 offset-s6"> 
+                        <a class="waves-effect waves-light btn modal-trigger" id="be_${disp.id}" href="#modalEdit" >Editar</a>
                     </div> 
-                    <div class="col s3"> 
-                        <a class="waves-effect waves-light btn-small" id="bb_${disp.id}" >Borrar</a> 
+                    <div class="col s2"> 
+                        <a class="waves-effect waves-light btn red" id="bb_${disp.id}" >Borrar</a> 
                     </div>
                 </div>
-            </div>
+            
           </li>`;
         }
         // Armar la grilla
@@ -142,8 +144,8 @@ class Main implements EventListenerObject, HandleResponse{
      
         // Cuando termine de cargar la página web, recuperar los elementos tipo "select"
         // Inicializarlos vacíos
-        var elems = document.querySelectorAll('select');
-        var instances = M.FormSelect.init(elems, "");
+        //var elems = document.querySelectorAll('select');
+        //var instances = M.FormSelect.init(elems, "");
        
         let tipoEvento:string=object.type;
         let objEvento: HTMLElement;
@@ -154,10 +156,15 @@ class Main implements EventListenerObject, HandleResponse{
             let nombre = (<HTMLInputElement>document.getElementById("nombre")).value;
             let tipo = (<HTMLInputElement>document.getElementById("tipo")).value;
             let descripcion = (<HTMLInputElement>document.getElementById("descripcion")).value;
-            console.log(nombre);
-            this.altaDispositivo(nombre, tipo, descripcion);
-            this.cosultarDispositivoAlServidor();
-            
+            //console.log(nombre);
+            if (nombre == "") {
+                (alert("No se pudo agregar el dispositivo. Por favor inténtelo nuevamente."));
+                
+            } else {
+                this.altaDispositivo(nombre, tipo, descripcion);
+                alert("El dispositivo se creó exitosamente")
+                this.cosultarDispositivoAlServidor();
+            }
         
         // Si se pide borrar un dispositivo
         } else if (objEvento.id.startsWith("bb_")) {
@@ -166,7 +173,7 @@ class Main implements EventListenerObject, HandleResponse{
             
             if (c == true) {  
              this.borrarDispositivo(idDis);
-             alert("Se borró exitosamente el dispositivo"+idDis);
+             alert("El dispositivo se eliminó exitosamente"+idDis);
              this.cosultarDispositivoAlServidor();  
             } 
             //this.borrarDispositivo(idDis);
@@ -188,34 +195,24 @@ class Main implements EventListenerObject, HandleResponse{
             // let btnconfedit = document.getElementById('edit');
             // btnconfedit.addEventListener("click", this);
         else if (objEvento.id=="edit") {
-            //let idDisp = objEvento.id.substring(3);
+            
             let idDisp = this.temp_id;
             let nombre = (<HTMLInputElement>document.getElementById("mod_nombre")).value;
             let descripcion = (<HTMLInputElement>document.getElementById("mod_descripcion")).value;
             let tipo = (<HTMLSelectElement>document.getElementById("mod_tipo")).selectedIndex;
             let estado = this.temp_state ;
-            // let nombre = this.temp_nombre;
-            // let tipo = this.temp_tipo;
-            // let descripcion = this.temp_desc;
+      
             console.log("Pedi editar con esto: Nombre = " + nombre + " ID: " + idDisp);
-            this.modificarDispositivo(idDisp, nombre, descripcion, tipo, estado);
-            this.cosultarDispositivoAlServidor();
-            //alert("hola estoy en el boton edit");
-
             
-        // Si se apretó boton otro
-        } else if(objEvento.id=="btnOtro"){
-            console.log(objEvento.id, objEvento.textContent); 
-            
-            let iNombre =<HTMLInputElement> document.getElementById("iNombre");
-            
-            objEvento.textContent = iNombre.value;
-            alert("hola estoy en el main");
-        // Si se apretó boton saludar
-        } else if (objEvento.id == "btnAgregar") {
-          
-            this.framework.mostrarCargando();
-            this.cosultarDispositivoAlServidor();
+            if (nombre == "") {
+                alert("No se pudo agregar el dispositivo. Inténtelo nuevamente.");
+            }
+            else {
+                this.modificarDispositivo(idDisp, nombre, descripcion, tipo, estado);
+                alert("El dispositivo se actualizó exitosamente");
+                this.cosultarDispositivoAlServidor();
+            }
+    
 
         // Cambiar el estado de un dispositivo
         } else if (objEvento.id.startsWith("cb_")) {
@@ -226,11 +223,13 @@ class Main implements EventListenerObject, HandleResponse{
             
             } else nuevoEstado = 0;
             console.log("se pidio cambiar el estado del dispositivo a :" + nuevoEstado);
-            // Aca llamo a la funcion para cambiar el estado
+
+            // Llamo a la funcion para cambiar el estado
             this.cambiarEstado(idDisp, nuevoEstado);
+            alert("Se cambió el estado del dispositivo");
             this.cosultarDispositivoAlServidor();
-            //
-            //alert("Se cambio el estado del dispositivo " + idDisp + " -" + (<HTMLInputElement>objEvento).checked);
+            
+        
             
         }
 
@@ -259,9 +258,6 @@ window.addEventListener("load", () => {
     // Boton confirmar que se edito un nuevo elemento
     let botonedit = document.getElementById("edit")
     botonedit.addEventListener("click", main);
-
-    //let borrar = document.getElementById("alta")
-    //borrar.addEventListener("click", main);
 
 
 

@@ -48,7 +48,7 @@
                         <!--<button class="btn waves-effect waves-light button-view" id="btnAgregar" name="add_button" >NUEVO</button>-->
                         <!-- <button class="btn waves-effect waves-light button-view" id="btnOtro" name="hello_button">Otro</button>-->
                         <!-- Modal Trigger -->
-                        <a class="waves-effect waves-light btn modal-trigger" id="nuevo" href="#modalNuevo">NUEVO</a>
+                        <a class="waves-effect waves-light btn-large modal-trigger" id="nuevo" href="#modalNuevo">NUEVO</a>
                     </div>
                 </div>
             </div>	
@@ -82,11 +82,11 @@
                   <div class="row">
                     <div class="input-field col s6">
                       <input placeholder="Ejemplo: Lámpara 1" id="nombre" type="text" class="validate">
-                      <label for="nombre">Nombre dispositivo</label>
+                      <label for="nombre">Nombre dispositivo (Obligatorio)</label>
                     </div>
                     <div class="input-field col s6">
-                      <input id="descripcion" type="text" class="validate">
-                      <label for="descripcion">Descripción</label>
+                      <input placeholder="Ejemplo: Dormitorio principal" id="descripcion" type="text" class="validate">
+                      <label for="descripcion">Descripción (Opcional)</label>
                     </div>
                   </div>
             <p>Seleccione el tipo de dispositivo</p>
@@ -99,7 +99,7 @@
                   <option value="3">Ventilador</option>
                   <option value="1">Persiana</option>
                 </select>
-                <label>Seleccione el tipo</label>
+                <label>Seleccione el tipo (Obligatorio)</label>
             </div>
             </div>
             <div class="modal-footer">
@@ -118,14 +118,14 @@
                     <div class="row">
                     <div class="input-field col s6">
                         <input placeholder="Ejemplo: Lámpara 1" id="mod_nombre" type="text" class="validate">
-                        <label for="nombre">Nuevo nombre dispositivo</label>
+                        <label for="nombre">Nombre dispositivo (Obligatorio)</label>
                     </div>
                     <div class="input-field col s6">
-                        <input id="mod_descripcion" type="text" class="validate">
-                        <label for="descripcion">Nueva descripción</label>
+                        <input placeholder="Descripción" id="mod_descripcion" type="text" class="validate">
+                        <label for="descripcion">Descripción (Opcional)</label>
                     </div>
                     </div>
-            <p>Seleccione el tipo de dispositivo</p>
+            <p>Seleccione el tipo de dispositivo (Obligatorio)</p>
             
             <!-- Dropdown Structure -->
             <div class="input-field col s12">
@@ -135,7 +135,7 @@
                     <option value="3">Ventilador</option>
                     <option value="1">Persiana</option>
                 </select>
-                <label>Cambiar el tipo</label>
+                <label>Seleccione el tipo (Obligatorio)</label>
             </div>
             </div>
             <div class="modal-footer">
@@ -144,7 +144,6 @@
             </div>
             </div>
         </div>
-    
 
 
 		<!--JavaScript at end of body for optimized loading-->
