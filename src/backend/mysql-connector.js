@@ -1,6 +1,6 @@
 //=======[ Settings, Imports & Data ]==========================================
 
-var mysql = require('mysql2');
+var mysql = require('mysql');
 
 var connection = mysql.createConnection({
     host     : 'mysql-server',
