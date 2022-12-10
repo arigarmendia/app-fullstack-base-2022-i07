@@ -214,7 +214,12 @@ Campos de la DB:
 
 #### Endpoints disponibles:
 
-A continuación se describen las APIs:
+En el siguiente diagrama se muestran los endpoints configurados. Para simplificar el dibujo, están agrupados aquellos que tienen  estructura similar:
+
+![backend](doc/endpoints.png)
+
+
+A continuación se listan los detalles de cada uno:
 
 1. Obtener toda la lista de dispositivos y sus características de la base de datos:
     *   URL: http://localhost:8000/devices

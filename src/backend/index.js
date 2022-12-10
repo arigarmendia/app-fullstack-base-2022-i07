@@ -32,7 +32,7 @@ app.get('/buscarDispositivo', function (req, res) {
     let query = 'SELECT * FROM Devices WHERE id =?';
     utils.query(query, [deviceID], (err, data) => {
         if (err) {
-            console.error(err);
+            res.send(err).status(400);
             return;
         }
         //console.log(data);
