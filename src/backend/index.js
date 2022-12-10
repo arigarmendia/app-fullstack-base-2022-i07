@@ -17,7 +17,6 @@ app.use(express.static('/home/node/app/static/'));
 
 // Funcion para validar que llegan en el json las propiedades name y type, y que no vienen vacias
 function validateInput(datos) {
-    //return ((datos.name != "" && datos.hasOwnProperty("name")) && (datos.hasOwnProperty("type")));
     return ((datos.name != "" && datos.type != "" && datos.hasOwnProperty("name")) && (datos.hasOwnProperty("type")));       
 }
 
@@ -109,7 +108,7 @@ app.delete("/borrarDispositivo", function (req, res) {
             return;
         }
         console.log("Ejecutó OK")
-        res.status(200);
+        res.sendStatus(200);
     });
 });
 

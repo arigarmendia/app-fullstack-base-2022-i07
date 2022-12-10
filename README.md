@@ -222,47 +222,47 @@ A continuación se describen las
 
      
         Ejemplo de respuesta (200):
-```json
-        [
-    {
-        "id": 13,
-        "name": "Persiana 1",
-        "description": "Ventana Comedor",
-        "state": 5,
-        "dimmer": 1,
-        "type": 1
-    },
-    {
-        "id": 16,
-        "name": "Velador 1",
-        "description": "Dormitorio principal",
-        "state": 1,
-        "dimmer": 0,
-        "type": 2
-    },
-    {
-        "id": 17,
-        "name": "Ventilador 1",
-        "description": "Living",
-        "state": 0,
-        "dimmer": 0,
-        "type": 3
-    },
-    {
-        "id": 19,
-        "name": "Persiana 2",
-        "description": "Ventana de la cocina",
-        "state": 9,
-        "dimmer": 1,
-        "type": 1
-    }
-]
-```
+    ```json
+            [
+        {
+            "id": 13,
+            "name": "Persiana 1",
+            "description": "Ventana Comedor",
+            "state": 5,
+            "dimmer": 1,
+            "type": 1
+        },
+        {
+            "id": 16,
+            "name": "Velador 1",
+            "description": "Dormitorio principal",
+            "state": 1,
+            "dimmer": 0,
+            "type": 2
+        },
+        {
+            "id": 17,
+            "name": "Ventilador 1",
+            "description": "Living",
+            "state": 0,
+            "dimmer": 0,
+            "type": 3
+        },
+        {
+            "id": 19,
+            "name": "Persiana 2",
+            "description": "Ventana de la cocina",
+            "state": 9,
+            "dimmer": 1,
+            "type": 1
+        }
+        ]
+    ```
 
 2. Buscar un dispositivo en particular por medio de su id:
     *   URL: http://localhost:8000/buscarDispositivo/?deviceID=id
     *   Método: GET
-    *   Body (ejemplo): {id: "3"}
+    *   Body: Ninguno
     *   Respuesta: 200 - OK, JSON con el dispositivo de interés / 400 - error
 
         Ejemplo de respuesta exitosa (200):
@@ -283,49 +283,27 @@ A continuación se describen las
 3. Alta de nuevo dispositivo
     *   URL: http://localhost:8000/nuevoDispositivo
     *   Método: POST
-    *   Body (ejemplo): {name: "Lampara 1", description: "Luz cocina", state: "0", }
+    *   Body (ejemplo): {"name": "Lámpara 1", "description": "Pasillo", "state": "0", "dimmer": "0", "type": "0"}
     *   Respuesta: 200 - OK / 400 - error
 
 4. Borrar un dispositivo a partir de su id
     *   URL: http://localhost:8000/borrarDispositivo
     *   Método: DELETE
-    *   Body (ejemplo): {id: "10"}
+    *   Body (ejemplo): {"id": "10"}
     *   Respuesta: 200 - OK / 400 - error
 
 5. Cambiar el estado de un dispositivo (switch o slider)
     *   URL: http://localhost:8000/cambiarEstadoDispositivo
     *   Método: PUT
-    *   Body (ejemplo): {id: 10, state: "8"} (el ejemplo corresponde a un botón slider, para ON/OFF el campo state solo toma valores "0" o "1")
+    *   Body (ejemplo): {"id": "10", "state: "8"} (el ejemplo corresponde a un botón slider, para ON/OFF el campo state solo toma valores "0" o "1")
     *   Respuesta: 200 - OK / 400 - error
 
 6. Modificar un dispositivo (nombre, descripcion, tipo, dimmer-y/n)
     *   URL: http://localhost:8000/modificarDispositivo
     *   Método: PUT
-    *   Body (ejemplo): {id: 10, name: "Persiana", description: "", state: "0", dimmer: "1", type: "1"}
+    *   Body (ejemplo): {"id": "13","name": "Persiana 1", "description": "Ventana Comedor", "state": "1", "dimmer": "0", "type": "1"}
     *   Respuesta: 200 - OK / 400 - error
 
-
-Completá todos los endpoints del backend con los metodos disponibles, los headers y body que recibe, lo que devuelve, ejemplos, etc.
-
-1) Devolver el estado de los dispositivos.
-
-```json
-{
-    "method": "get",
-    "request_headers": "application/json",
-    "request_body": "",
-    "response_code": 200,
-    "request_body": {
-        "devices": [
-            {
-                "id": 1,
-                "status": true,
-                "description": "Kitchen light"
-            }
-        ]
-    },
-}
-``` 
 
 </details>
 
