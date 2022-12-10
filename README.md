@@ -189,8 +189,9 @@ En esta sección se describen los detalles específicos de funcionamiento de la 
 ### Frontend
 
 A continuación se muestra un diagrama con los componentes del frontend e interacciones generales con el backend.
-Para el frontend se utilizaro elementos de la librería Materialize (botones, modales, drop-down, etc).
+Para el frontend se utilizaron elementos del framework Materialize (botones, modales, drop-down, etc).
 
+![frontend](doc/frontend.png)
 
 ### Backend
 
