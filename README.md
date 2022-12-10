@@ -156,7 +156,7 @@ En esta sección se describen los detalles específicos de funcionamiento de la 
 
 <details><summary><b>Mira los detalles de implementación</b></summary><br>
 
-### Agregar un dispositivo
+#### Instrucciones para agregar un dispositivo
 
 1. En la pantalla principal, hacer click en el botón "NUEVO". A continuación aparece el pop-up "Nuevo dispositivo".
 
