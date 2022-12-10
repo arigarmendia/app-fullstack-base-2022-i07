@@ -158,15 +158,15 @@ En esta sección se describen los detalles específicos de funcionamiento de la 
 
 ### Agregar un dispositivo
 
-#### 1. En la pantalla principal, hacer click en el botón "NUEVO". A continuación aparece el pop-up "Nuevo dispositivo".
+1. En la pantalla principal, hacer click en el botón "NUEVO". A continuación aparece el pop-up "Nuevo dispositivo".
 
 ![nuevo dispositivo](doc/paso1_agregar.png)
 
-#### 2. En la ventana de pop-up, ingresar el nombre del dispositivo (es un campo obligatorio) y una descripción de ser necesario (opcional).
-#### 3. Elegir del desplegable un tipo de dispositivo. Existen 4 opciones: Lámpara, Ventilador, Velador o Persiana. Este campo es obligatorio.
-#### 4. Tildar la casilla "Dimmer" si se desea tener un control granular sobre el dispositivo. En caso contrario, dejarlo en blanco para conseguir una funcionalidad de tipo switch ON/OFF.
+2. En la ventana de pop-up, ingresar el nombre del dispositivo (es un campo obligatorio) y una descripción de ser necesario (opcional).
+3. Elegir del desplegable un tipo de dispositivo. Existen 4 opciones: Lámpara, Ventilador, Velador o Persiana. Este campo es obligatorio.
+4. Tildar la casilla "Dimmer" si se desea tener un control granular sobre el dispositivo. En caso contrario, dejarlo en blanco para conseguir una funcionalidad de tipo switch ON/OFF.
 
-#### 5. Una vez que todos los campos necesarios están completos, confirmar la creación del dispositivo presionando el botón "ACEPTAR".
+5. Una vez que todos los campos necesarios están completos, confirmar la creación del dispositivo presionando el botón "ACEPTAR".
 
 ![agregar nuevo dispositivo](doc/pasos_agregar.png)
 
@@ -183,7 +183,7 @@ En esta sección se describen los detalles específicos de funcionamiento de la 
 
 ![funciones](doc/funciones.png)
 
-*   Cuando se agrega un nuevo dispositivo o cuando se cambia el "tipo" de un elemento existente, se inicializa su estado en cero por seguridad.
+*   Cuando se agrega un nuevo dispositivo o cuando se cambia el "tipo" de un elemento existente, se inicializa su estado en cero  por seguridad.
 *   La aplicación viene con algunos dispositivos cargados como ejemplo.
 
 ### Frontend
@@ -192,6 +192,7 @@ A continuación se muestra un diagrama con los componentes del frontend e intera
 Para el frontend se utilizaron elementos del framework Materialize (botones, modales, drop-down, etc).
 
 ![frontend](doc/frontend.png)
+
 
 ### Backend
 
