@@ -170,12 +170,9 @@ En esta sección se describen los detalles específicos de funcionamiento de la 
 
 ![agregar nuevo dispositivo](doc/pasos_agregar.png)
 
+#### La aplicación ofrece además las siguientes funcionalidades:
 
-### Frontend
-
-La aplicación cuenta ofrece las siguientes funcionalidades:
-
-*   El sistema permite, además de agregar dispositivos, modificar cualquiera de sus propiedades (Nombre, descripción, tipo, estado) a traves del botón "EDITAR" como se muestra en la figura. El proceso para cambiar las características de un dispositivo es similar al de agregar un elemento ya que se hace por medio de una ventana de pop-up que viene completada con todos los datos actuales del equipo.
+*   El sistema permite, además de agregar dispositivos, modificar cualquiera de sus propiedades (Nombre, descripción, tipo) a traves del botón "EDITAR" como se muestra en la figura. El proceso para cambiar las características de un dispositivo es similar al de agregar un elemento ya que se hace por medio de una ventana de pop-up que viene completada con todos los datos actuales del equipo. El estado del dispositivo se modifica directamente utilizando los botones switch ON/OFF o slider (range).
 
 ![editar](doc/editar.png)
 
@@ -189,12 +186,69 @@ La aplicación cuenta ofrece las siguientes funcionalidades:
 *   Cuando se agrega un nuevo dispositivo o cuando se cambia el "tipo" de un elemento existente, se inicializa su estado en cero por seguridad.
 *   La aplicación viene con algunos dispositivos cargados como ejemplo.
 
+### Frontend
+
+A continuación se muestra un diagrama con los componentes del frontend e interacciones generales con el backend.
+Para el frontend se utilizaro elementos de la librería Materialize (botones, modales, drop-down, etc).
+
 
 ### Backend
 
-Completá todos los detalles de funcionamiento sobre el backend, sus interacciones con el cliente web, la base de datos, etc.
+#### Detalle de la base de datos
+
+Campos de la DB: 
+
+*   id: identificador del elemento dentro de la tabla (se asigna automáticamente).
+*   type: indica de qué tipo de dispositivo se trata, y puede tomar valores entre 0 y 3.
+*   name: nombre del dispositivo asignado por el usuario.
+*   description: indica la descripción ingresada por el usuario.
+*   state: este campo indica el estado del dispositivo y es un valor numérico entre 1 y 10.
+*   dimmer: indica si el tipo de control es dimmer (1) o switch (0). 
+*   intensidad: Valor de la intensidad de 0 a 100. (únicamente para los dispositivos de tipo 2)
+
 
 <details><summary><b>Ver los endpoints disponibles</b></summary><br>
+
+#### Endpoints disponibles:
+
+A continuación se describen las 
+
+1. Obtener toda la lista de dispositivos y sus características de la base de datos:
+    *   URL: http://localhost:8000/devices
+    *   Método: GET
+    *   Body: Ninguno
+    *   Respuesta: 200 - OK, JSON con los dispositivos / 400 - error
+
+2. Buscar un dispositivo en particular por medio de su id:
+    *   URL: http://localhost:8000/buscarDispositivo/id
+    *   Método: GET
+    *   Body (ejemplo): {id: "3"}
+    *   Respuesta: 200 - OK, JSON con el dispositivo de interés / 400 - error
+
+3. Alta de nuevo dispositivo
+    *   URL: http://localhost:8000/nuevoDispositivo
+    *   Método: POST
+    *   Body (ejemplo): {name: "Lampara 1", description: "Luz cocina", state: "0", }
+    *   Respuesta: 200 - OK, JSON con el dispositivo de interés / 400 - error
+
+4. Borrar un dispositivo a partir de su id
+    *   URL: http://localhost:8000/borrarDispositivo
+    *   Método: DELETE
+    *   Body (ejemplo): {id: "10"}
+    *   Respuesta: 200 - OK / 400 - error
+
+5. Cambiar el estado de un dispositivo (switch o slider)
+    *   URL: http://localhost:8000/cambiarEstadoDispositivo
+    *   Método: PUT
+    *   Body (ejemplo): {id: 10, state: "8"} (el ejemplo corresponde a un botón slider, para ON/OFF el campo state solo toma valores "0" o "1")
+    *   Respuesta: 200 - OK / 400 - error
+
+6. Modificar un dispositivo (nombre, descripcion, tipo, dimmer-y/n)
+    *   URL: http://localhost:8000/modificarDispositivo
+    *   Método: PUT
+    *   Body (ejemplo): {id: 10, name: "Persiana", description: "", state: "0", dimmer: "1", type: "1"}
+    *   Respuesta: 200 - OK / 400 - error
+
 
 Completá todos los endpoints del backend con los metodos disponibles, los headers y body que recibe, lo que devuelve, ejemplos, etc.
 

@@ -36,7 +36,7 @@ class Main implements EventListenerObject, HandleResponse{
     // Cambiar estado de un dispositivo a partir de su id
     cambiarEstado(id, state) {
         let json = {id: id, state: state};
-        console.log("vino cambio de estado del dispositivo a"+state);
+        console.log("Vino pedido de cambio de estado del dispositivo a "+ state);
         this.framework.ejecutarRequest("PUT", "http://localhost:8000/cambiarEstadoDispositivo",this,json);
     }
 
@@ -47,7 +47,7 @@ class Main implements EventListenerObject, HandleResponse{
         this.framework.ejecutarRequest("PUT", "http://localhost:8000/modificarDispositivo",this, json);            
     }
 
-// llenado del form del modal de update device
+// LLenado del form del modal pop-up "EDITAR"
     cargarModalUpdate(disp:Array<Device>){
         console.log("Estoy en cargar el modal, disp.name = " + disp[0].name + "descripcion = " + disp[0].description);
         (<HTMLInputElement>document.getElementById("mod_nombre")).value = disp[0].name;
@@ -63,7 +63,7 @@ class Main implements EventListenerObject, HandleResponse{
             (<HTMLInputElement>document.getElementById("dim_editar")).checked=false;
         }
         
-}
+    }
 
     // Para dibujar la grilla con los elementos 
     cargarGrilla(listaDisp: Array<Device>) {

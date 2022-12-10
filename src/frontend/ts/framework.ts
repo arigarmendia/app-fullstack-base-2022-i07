@@ -35,12 +35,12 @@ class Framework{
         xmlHttp.send();
       }
     }
-    public mostrarCargando() {
-      let imgLoading = document.getElementById("loading");
-      imgLoading.hidden = false;
-    }
-    public ocultarCargando() {
-      let imgLoading = document.getElementById("loading");
-      imgLoading.hidden = true;
-    }
+    // public mostrarCargando() {
+    //   let imgLoading = document.getElementById("loading");
+    //   imgLoading.hidden = false;
+    // }
+    // public ocultarCargando() {
+    //   let imgLoading = document.getElementById("loading");
+    //   imgLoading.hidden = true;
+    // }
   }
