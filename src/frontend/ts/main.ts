@@ -232,10 +232,10 @@ class Main implements EventListenerObject, HandleResponse{
                 console.log("Pedi editar con esto: Nombre = " + nombre + " ID: " + idDisp+" dimmer check: " +dimmer + " estado:" + estado);
                 alert("El dispositivo se actualizó exitosamente");     
                 this.temp_id = "0";
-                this.cosultarDispositivoAlServidor();
+                
                 
             }
-          
+        this.cosultarDispositivoAlServidor();  
 
         // Cambiar el estado de un dispositivo check box
         } else if (objEvento.id.startsWith("cb_")) {
