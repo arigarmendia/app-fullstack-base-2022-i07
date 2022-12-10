@@ -152,13 +152,32 @@ En la siguiente ilustración podés ver cómo está organizado el proyecto para 
 
 ## Detalles de implementación 💻
 
-En esta sección podés ver los detalles específicos de funcionamiento del código y que son los siguientes.
+En esta sección se describen los detalles específicos de funcionamiento de la aplicación:
 
 <details><summary><b>Mira los detalles de implementación</b></summary><br>
 
 ### Agregar un dispositivo
 
-Completá los pasos para agregar un dispositivo desde el cliente web.
+#### 1. En la pantalla principal, hacer click en el botón "NUEVO". A continuación aparece el pop-up "Nuevo dispositivo".
+
+![nuevo dispositivo](doc/paso1_agregar.png)
+
+#### 2. En la ventana de pop-up, ingresar el nombre del dispositivo (es un campo obligatorio) y una descripción de ser necesario (opcional).
+#### 3. Elegir del desplegable un tipo de dispositivo. Existen 4 opciones: Lámpara, Ventilador, Velador o Persiana. Este campo es obligatorio.
+#### 4. Tildar la casilla "Dimmer" si se desea tener un control granular sobre el dispositivo. En caso contrario, dejarlo en blanco para conseguir una funcionalidad de tipo switch (ON/OFF) únicamente.
+
+
+![agregar nuevo dispositivo](doc/pasos_agregar.png)
+
+#### Otras funcionalidades y consideraciones de interés:
+
+*   #### El sistema permite, además de agregar dispositivos, modificar cualquiera de sus propiedades (Nombre, descripción, tipo, estado). 
+*   #### Cuando se setea la propiedad "Dimmer", se puede controlar el dispositivo dentro de un rango de intensidad que va desde el 0 (apagado) al 10 (valor máximo) y permite incrementos de a 1.
+*   #### Si no se selecciona el tilde "Dimmer", el dispositivo se controla por medio de un switch ON/OFF.
+*   #### Se pueden eliminar dispositivos por medio del botón "BORRAR". El sistema solicita confirmación del usuario antes de proceder.
+*   ####  Cuando se agrega un nuevo dispositivo o cuando se cambia el "tipo" de un elemento existente, se inicializa su estado en cero por seguridad.
+*   #### La aplicación viene con algunos dispositivos cargados como ejemplo.
+
 
 ### Frontend
 
@@ -193,6 +212,33 @@ Completá todos los endpoints del backend con los metodos disponibles, los heade
 ``` 
 
 </details>
+
+</details>
+
+
+<details><summary><b>Ejecución sobre chip Apple silicon M1</b></summary><br>
+
+#### Por defecto, la aplicación no funciona sobre chips Apple M1 porque la versión del server MySQL (5.7) utilizada no es compatible con dicha plataforma. Sin embargo, es posible corregir el problema por medio de algunos updates como se detalla a continuación:
+
+*   Clonar el repositorio con el codigo fuente de la aplicación.
+*   En el archivo "docker-compose.yml", reemplazar la versión 5.7 de la imagen del server "mysql-server" con la versión arm64v8/mysql:oracle que es compatible con el chip M1 (Ver captura de pantalla a continuación). </br >
+
+![docker_compose](doc/docker_compose.png)
+
+*   En el archivo "mysql-connector.js", reemplazar la versión del conector "mysql" con "mysql2".
+
+![conector](doc/mysql2.png)
+
+*   Guardar todos los cambios y en una terminal bash, ejecutar "docker-compose up" para levantar los containers.
+*   En esta instancia se observarán algunos errores: los logs indicarán que no se encontró la dependencia "mysql2" y por otra parte se pueden observar mensajes adivirtiendo que falla la conexión a la base de datos. Esto se solucionará a continuación.
+*   En la aplicación Docker de escritorio, verificar que todos los containers se encuentran arriba.
+*   Hacer click en el server de Node (node-backend-1) y abrir la terminal. Ejecutar el comando "npm install mysql2" para instalar la dependencia faltante.
+
+![npm](doc/npm.png)
+
+*   Abrir la app en el browser, http://localhost:8000/, que debería estar en funcionamiento. En caso de algún error, probar deteniendo y reactivando los containers. La aplicación funciona correctamente cuando se observan los siguientes logs en la terminal bash: 
+
+![logs consola](doc/logs_consola.png)
 
 </details>
 

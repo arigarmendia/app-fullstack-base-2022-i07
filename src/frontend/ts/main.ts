@@ -153,7 +153,7 @@ class Main implements EventListenerObject, HandleResponse{
             //btnconfedit.addEventListener("click", this);
         }
         
-        this.framework.ocultarCargando();
+        //this.framework.ocultarCargando();
         
     }
     // Aquí se manejan las distintas actividades que puedan ocurrir
@@ -173,10 +173,11 @@ class Main implements EventListenerObject, HandleResponse{
             if (nombre == "" || tipo == "") {
                 (alert("No se pudo agregar el dispositivo. Por favor inténtelo nuevamente."));
                 
+                
             } else {
                 this.altaDispositivo(nombre, tipo, descripcion, dimmer);
-                //alert("El dispositivo se creó exitosamente");
                 this.cosultarDispositivoAlServidor();
+                alert("El dispositivo se creó exitosamente");
                 
             }
         
@@ -229,12 +230,12 @@ class Main implements EventListenerObject, HandleResponse{
             else {
                 this.modificarDispositivo(idDisp, nombre, descripcion, tipo, estado, dimmer);
                 console.log("Pedi editar con esto: Nombre = " + nombre + " ID: " + idDisp+" dimmer check: " +dimmer + " estado:" + estado);
-                alert("El dispositivo se actualizó exitosamente");
-                this.cosultarDispositivoAlServidor();
+                alert("El dispositivo se actualizó exitosamente");     
                 this.temp_id = "0";
+                this.cosultarDispositivoAlServidor();
                 
             }
-    
+          
 
         // Cambiar el estado de un dispositivo check box
         } else if (objEvento.id.startsWith("cb_")) {
@@ -249,6 +250,7 @@ class Main implements EventListenerObject, HandleResponse{
             // Llamo a la funcion para cambiar el estado
             this.cambiarEstado(idDisp, nuevoEstado);
             //alert("Se cambió el estado del dispositivo");
+            this.cosultarDispositivoAlServidor();
             
         
         // Cambiar el estado de un dispositivo dimmer    
@@ -257,12 +259,13 @@ class Main implements EventListenerObject, HandleResponse{
             let nuevoEstado1 = (<HTMLInputElement>objEvento).value;
             this.cambiarEstado(idDisp, nuevoEstado1);
             //alert("Se cambió el estado del dispositivo");
+            this.cosultarDispositivoAlServidor();
             
         
         }
-       
+    this.cosultarDispositivoAlServidor();  
     }
-    
+     
 }
 
 // Instancio la clase Main

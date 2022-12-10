@@ -49,15 +49,15 @@ app.get('/buscarDispositivo', function (req, res) {
 // Nota: Se realiza una validación para asegurar que nombre y tipo de dispositivo están (son obligatorios)
 
 app.get('/devices/', function (req, res) {
-
-        utils.query('SELECT * from Devices', (err, rows) => {  
-            if (err){ 
-                res.send( err).status(400); 
-               return
-            }
-            console.log('The data from Devices table are: \n', rows);
-            res.send(JSON.stringify(rows)).status(200);
-        });
+    console.log("Se pidio buscar la lista de dispositivos");
+    utils.query('SELECT * from Devices', (err, rows) => {  
+        if (err){ 
+            res.send( err).status(400); 
+            return;
+        }
+            
+        res.send(JSON.stringify(rows)).status(200);
+    });
    
 });
 
@@ -71,24 +71,25 @@ app.get('/devices/', function (req, res) {
 
 app.post("/nuevoDispositivo", function (req, res) {
     console.log("Se pidio insertar en la DB");
-        let data = req.body;
-        console.log(req.body);
-        if (validateInput(data)) {
+    let data = req.body;
+    console.log(req.body);
+    if (validateInput(data)) {
             
-            query = 'INSERT INTO Devices (name, description, type, state, dimmer) VALUES ( ?, ?, ?, ?, ?)';
-            console.log(query);
-            utils.query(query,[req.body.name, req.body.description, req.body.type, req.body.state, req.body.dimmer], (err, response) => {
-                if (err) {
-                    console.error(err);
-                    res.send("Error creating device").status(400);
-                    return;
-                }
-                res.status(200)
-                });
+        query = 'INSERT INTO Devices (name, description, type, state, dimmer) VALUES ( ?, ?, ?, ?, ?)';
+        console.log(query);
+        utils.query(query,[req.body.name, req.body.description, req.body.type, req.body.state, req.body.dimmer], (err, response) => {
+            if (err) {
+                console.error(err);
+                res.send("Error creating device").status(400);
+                return;
+            }
+            res.status(200);
+            console.log("Ejecutó OK");
+        });
            
-        } else {
+    } else {
             res.send("Bad Data").status(300);
-        }
+    }
 });
 
 
@@ -99,16 +100,17 @@ app.post("/nuevoDispositivo", function (req, res) {
 
 app.delete("/borrarDispositivo", function (req, res) {
     console.log("Request para remover un dispositivo de la DB");
-        let data = req.body;
-        let query = 'DELETE from Devices WHERE id = ' + data.id;
-        console.log(query);
-        utils.query(query, (err, response) => {
-            if (err) {
-                console.error(err);
-                return;
-            }
-            res.status(200);
-        });
+    let data = req.body;
+    let query = 'DELETE from Devices WHERE id = ' + data.id;
+    console.log(query);
+    utils.query(query, (err, response) => {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        console.log("Ejecutó OK")
+        res.status(200);
+    });
 });
 
 
@@ -118,7 +120,7 @@ app.delete("/borrarDispositivo", function (req, res) {
 // Output: OK (200) / Error (400)
 
 app.put("/cambiarEstadoDispositivo", function (req, res) {
-    console.log("Se pidió cambiar el estado del dispositivo en la DB a " + req.body.state);
+    console.log("Se pidió cambiar el estado del dispositivo con id:" + req.body.id);
 
         let query = 'UPDATE Devices SET state = ? WHERE id = ?';
         utils.query(query,[req.body.state, req.body.id], (err, response) => {
@@ -126,6 +128,7 @@ app.put("/cambiarEstadoDispositivo", function (req, res) {
                 res.send(err).status(400);
                 return;
             }
+            console.log("Ejecutó OK");
             res.status(200);
         });
 });
@@ -137,13 +140,13 @@ app.put("/cambiarEstadoDispositivo", function (req, res) {
 // Output: OK (200) / Error (400)
 
 app.put("/modificarDispositivo", function (req, res) {
-    console.log("pidieron modificar un dispositivo en la DB");
-        let data = req.body;
-        
+    
+    let data = req.body;
+    console.log("Se pidió modificar un dispositivo en la DB con estos valores: " + data);
+
         if (validateInput(data)) {
-            console.log(data)
+
             query = 'UPDATE Devices SET name = ?, description = ?, state = ?, dimmer = ?, type = ? WHERE id = ?';
-            console.log(query);
             
             utils.query(query,[data.name, data.description, data.state, data.dimmer, data.type, data.id], (err, response) => {
                 if (err) {
