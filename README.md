@@ -188,7 +188,7 @@ En esta sección se describen los detalles específicos de funcionamiento de la 
 ### Frontend
 
 A continuación se muestra un diagrama con los componentes del frontend e interacciones generales con el backend.
-Para el frontend se utilizaron elementos del framework Materialize (botones, modales, drop-down, etc). Se creó una clase principal "Main" y distintos métodos que permiten realizar varias funciones como se muestra en el diagrama. Siempre que se realiza alguna operación (agregar un dispositivo, modificar un dispositivo, etc) se busca la información de todos los dispositivos en la base de datos y se refresca la página. 
+Para el frontend se utilizaron elementos del framework Materialize (botones, modales, drop-down, etc). Se creó una clase principal (Main) y distintos métodos que permiten realizar varias funciones como se muestra en el diagrama. Siempre que se realiza alguna operación (agregar un dispositivo, modificar un dispositivo, etc) se busca la información de todos los dispositivos en la base de datos y se refresca la página. 
 Se realiza una validación de los datos en los casos que se agrega o se modifica un elemento, para asegurar que el nombre y el tipo del dispositivo existen (no pueden ser nulos). También se efectúan estas validaciones en el backend.
 
 
