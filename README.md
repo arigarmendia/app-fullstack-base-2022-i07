@@ -188,7 +188,9 @@ En esta sección se describen los detalles específicos de funcionamiento de la 
 ### Frontend
 
 A continuación se muestra un diagrama con los componentes del frontend e interacciones generales con el backend.
-Para el frontend se utilizaron elementos del framework Materialize (botones, modales, drop-down, etc).
+Para el frontend se utilizaron elementos del framework Materialize (botones, modales, drop-down, etc). Se creó una clase principal "Main" y distintos métodos que permiten realizar varias funciones como se muestra en el diagrama. Siempre que se realiza alguna operación (agregar un dispositivo, modificar un dispositivo, etc) se busca la información de todos los dispositivos en la base de datos y se refresca la página. 
+Se realiza una validación de los datos en los casos que se agrega o se modifica un elemento, para asegurar que el nombre y el tipo del dispositivo existen (no pueden ser nulos). También se efectúan estas validaciones en el backend.
+
 
 ![frontend](doc/frontend.png)
 
@@ -212,13 +214,13 @@ Campos de la DB:
 
 #### Endpoints disponibles:
 
-A continuación se describen las 
+A continuación se describen las APIs:
 
 1. Obtener toda la lista de dispositivos y sus características de la base de datos:
     *   URL: http://localhost:8000/devices
     *   Método: GET
     *   Body: Ninguno
-    *   Respuesta: 200 - OK, JSON con los dispositivos / 400 - error
+    *   Respuesta: 200 - OK + JSON con los dispositivos / 400 - error
 
      
         Ejemplo de respuesta (200):
@@ -263,7 +265,7 @@ A continuación se describen las
     *   URL: http://localhost:8000/buscarDispositivo/?deviceID=id
     *   Método: GET
     *   Body: Ninguno
-    *   Respuesta: 200 - OK, JSON con el dispositivo de interés / 400 - error
+    *   Respuesta: 200 - OK + JSON con el dispositivo de interés / 400 - error
 
         Ejemplo de respuesta exitosa (200):
         url: http://localhost:8000/buscarDispositivo/?deviceID=19
