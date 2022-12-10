@@ -175,7 +175,7 @@ class Main implements EventListenerObject, HandleResponse{
                 
             } else {
                 this.altaDispositivo(nombre, tipo, descripcion, dimmer);
-                alert("El dispositivo se creó exitosamente");
+                //alert("El dispositivo se creó exitosamente");
                 this.cosultarDispositivoAlServidor();
                 
             }
@@ -187,7 +187,7 @@ class Main implements EventListenerObject, HandleResponse{
             
             if (c == true) {  
                 this.borrarDispositivo(idDis);
-                alert("El dispositivo se eliminó exitosamente");
+                //alert("El dispositivo se eliminó exitosamente");
                 this.cosultarDispositivoAlServidor();
             } 
             
@@ -231,6 +231,7 @@ class Main implements EventListenerObject, HandleResponse{
                 console.log("Pedi editar con esto: Nombre = " + nombre + " ID: " + idDisp+" dimmer check: " +dimmer + " estado:" + estado);
                 alert("El dispositivo se actualizó exitosamente");
                 this.cosultarDispositivoAlServidor();
+                this.temp_id = "0";
                 
             }
     
@@ -247,7 +248,7 @@ class Main implements EventListenerObject, HandleResponse{
 
             // Llamo a la funcion para cambiar el estado
             this.cambiarEstado(idDisp, nuevoEstado);
-            alert("Se cambió el estado del dispositivo");
+            //alert("Se cambió el estado del dispositivo");
             
         
         // Cambiar el estado de un dispositivo dimmer    
@@ -255,7 +256,7 @@ class Main implements EventListenerObject, HandleResponse{
             let idDisp = objEvento.id.substring(4);
             let nuevoEstado1 = (<HTMLInputElement>objEvento).value;
             this.cambiarEstado(idDisp, nuevoEstado1);
-            alert("Se cambió el estado del dispositivo");
+            //alert("Se cambió el estado del dispositivo");
             
         
         }
