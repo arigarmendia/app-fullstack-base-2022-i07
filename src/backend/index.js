@@ -52,7 +52,7 @@ app.get('/devices/', function (req, res) {
     console.log("Se pidio buscar la lista de dispositivos");
     utils.query('SELECT * from Devices', (err, rows) => {  
         if (err){ 
-            res.send( err).status(400); 
+            res.send(err).status(400); 
             return;
         }
             
@@ -80,10 +80,10 @@ app.post("/nuevoDispositivo", function (req, res) {
         utils.query(query,[req.body.name, req.body.description, req.body.type, req.body.state, req.body.dimmer], (err, response) => {
             if (err) {
                 console.error(err);
-                res.send("Error creating device").status(400);
+                res.send("Error crando el dispositivo").status(400);
                 return;
             }
-            res.status(200);
+            res.sendStatus(200);
             console.log("Ejecutó OK");
         });
            
@@ -129,7 +129,7 @@ app.put("/cambiarEstadoDispositivo", function (req, res) {
                 return;
             }
             console.log("Ejecutó OK");
-            res.status(200);
+            res.sendStatus(200);
         });
 });
 
@@ -155,7 +155,7 @@ app.put("/modificarDispositivo", function (req, res) {
                     return;
                 }
                 console.log("Ejecuto OK");
-                res.status(200);
+                res.sendStatus(200);
             });
         } else {
             res.send("Bad Data").status(300);

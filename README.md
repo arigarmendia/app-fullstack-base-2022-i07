@@ -165,7 +165,6 @@ En esta sección se describen los detalles específicos de funcionamiento de la 
 2. En la ventana de pop-up, ingresar el nombre del dispositivo (es un campo obligatorio) y una descripción de ser necesario (opcional).
 3. Elegir del desplegable un tipo de dispositivo. Existen 4 opciones: Lámpara, Ventilador, Velador o Persiana. Este campo es obligatorio.
 4. Tildar la casilla "Dimmer" si se desea tener un control granular sobre el dispositivo. En caso contrario, dejarlo en blanco para conseguir una funcionalidad de tipo switch ON/OFF.
-
 5. Una vez que todos los campos necesarios están completos, confirmar la creación del dispositivo presionando el botón "ACEPTAR".
 
 ![agregar nuevo dispositivo](doc/pasos_agregar.png)
@@ -183,7 +182,7 @@ En esta sección se describen los detalles específicos de funcionamiento de la 
 
 ![funciones](doc/funciones.png)
 
-*   Cuando se agrega un nuevo dispositivo o cuando se cambia el "tipo" de un elemento existente, se inicializa su estado en cero  por seguridad.
+*   Cuando se agrega un nuevo dispositivo o cuando se cambia el tipo de botón de control (switch <--> dimmer) de un elemento existente, se inicializa su estado en cero por seguridad.
 *   La aplicación viene con algunos dispositivos cargados como ejemplo.
 
 ### Frontend
@@ -221,17 +220,71 @@ A continuación se describen las
     *   Body: Ninguno
     *   Respuesta: 200 - OK, JSON con los dispositivos / 400 - error
 
+     
+        Ejemplo de respuesta (200):
+```json
+        [
+    {
+        "id": 13,
+        "name": "Persiana 1",
+        "description": "Ventana Comedor",
+        "state": 5,
+        "dimmer": 1,
+        "type": 1
+    },
+    {
+        "id": 16,
+        "name": "Velador 1",
+        "description": "Dormitorio principal",
+        "state": 1,
+        "dimmer": 0,
+        "type": 2
+    },
+    {
+        "id": 17,
+        "name": "Ventilador 1",
+        "description": "Living",
+        "state": 0,
+        "dimmer": 0,
+        "type": 3
+    },
+    {
+        "id": 19,
+        "name": "Persiana 2",
+        "description": "Ventana de la cocina",
+        "state": 9,
+        "dimmer": 1,
+        "type": 1
+    }
+]
+```
+
 2. Buscar un dispositivo en particular por medio de su id:
-    *   URL: http://localhost:8000/buscarDispositivo/id
+    *   URL: http://localhost:8000/buscarDispositivo/?deviceID=id
     *   Método: GET
     *   Body (ejemplo): {id: "3"}
     *   Respuesta: 200 - OK, JSON con el dispositivo de interés / 400 - error
+
+        Ejemplo de respuesta exitosa (200):
+        url: http://localhost:8000/buscarDispositivo/?deviceID=19
+        ```json
+        [
+            {
+                "id": 19,
+                "name": "Persiana 2",
+                "description": "Ventana de la cocina",
+                "state": 9,
+                "dimmer": 1,
+                "type": 1
+            }
+        ]
+        ```
 
 3. Alta de nuevo dispositivo
     *   URL: http://localhost:8000/nuevoDispositivo
     *   Método: POST
     *   Body (ejemplo): {name: "Lampara 1", description: "Luz cocina", state: "0", }
-    *   Respuesta: 200 - OK, JSON con el dispositivo de interés / 400 - error
+    *   Respuesta: 200 - OK / 400 - error
 
 4. Borrar un dispositivo a partir de su id
     *   URL: http://localhost:8000/borrarDispositivo

@@ -13,18 +13,18 @@ class Framework{
             responseHandler.cargarModalUpdate(disp);
           
 
-          } else if (xmlHttp.status == 200) {
-                console.log("DEBUG: - MANDO Respuesta de la consulta a dispositivos");
-                let listaDisp: Array<Device> = JSON.parse(xmlHttp.responseText);
-                responseHandler.cargarGrilla(listaDisp);
-                console.log("DEBUG: - RECIBI de la consulta a dispositivos");
+          } else if (xmlHttp.status == 200 && url.includes(`/devices`) ) {
+            console.log("DEBUG: - MANDO Respuesta de la consulta a dispositivos");
+            let listaDisp: Array<Device> = JSON.parse(xmlHttp.responseText);
+            responseHandler.cargarGrilla(listaDisp);
+            console.log("DEBUG: - RECIBI de la consulta a dispositivos");
 
-         } else {
+         } else if (xmlHttp.status != 200) {
                   alert("ERROR en la consulta");
               }
               
           }
-          }
+      }
       xmlHttp.open(metodo, url, true);
       if (data != undefined) {
         xmlHttp.setRequestHeader("Content-Type", "application/json");  
@@ -35,12 +35,5 @@ class Framework{
         xmlHttp.send();
       }
     }
-    // public mostrarCargando() {
-    //   let imgLoading = document.getElementById("loading");
-    //   imgLoading.hidden = false;
-    // }
-    // public ocultarCargando() {
-    //   let imgLoading = document.getElementById("loading");
-    //   imgLoading.hidden = true;
-    // }
+    
   }
